@@ -20,7 +20,7 @@ async function fetchEmployees(): Promise<APIResponse[]> {
 
     return response.data;
   } catch (error) {
-    // console.error(error);
+    console.error(error);
     return [];
   }
 }

@@ -16,14 +16,16 @@ const PORT = process.env.PORT || 3001;
 (async () => {
   try {
     prisma.$connect();
-    // console.log("Connection to database established.");
+    console.log("Connection to database established.");
   } catch (error) {
-    // console.error("Error connecting to the database: ", error);
+    console.error("Error connecting to the database: ", error);
     process.exit(1);
   }
 })();
 
 app.post("/add-employee", async (req, res) => {
+  console.log("add employee called");
+
   try {
     const { empId, empName, email, phone, department, dateOfJoining, empRole } =
       req.body;
@@ -65,19 +67,21 @@ app.post("/add-employee", async (req, res) => {
 
     res.status(200).json({ message: "Employee added successfully." });
   } catch (error) {
-    // console.error(error);
+    console.error(error);
     res.status(500).json({ message: "Error fetching data." });
   }
 });
 
 app.get("/read-employees", async (req, res) => {
+  console.log("read employees called");
+
   try {
     const employees = await prisma.employee.findMany();
 
-    // console.log(employees);
+    console.log(employees);
     res.status(200).json(employees);
   } catch (err) {
-    // console.error(err);
+    console.error(err);
     res.status(500).json([]);
   }
 });
