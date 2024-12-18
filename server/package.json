@@ -18,7 +18,8 @@
   "type": "commonjs",
   "scripts": {
     "build": "tsc",
-    "start": "ts-node src/server.ts"
+    "start": "ts-node src/server.ts",
+    "postinstall": "prisma generate"
   },
   "author": "",
   "license": "ISC",
