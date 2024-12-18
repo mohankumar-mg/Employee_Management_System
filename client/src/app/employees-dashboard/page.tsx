@@ -5,13 +5,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 interface APIResponse {
-  empId: String;
-  empName: String;
-  email: String;
-  phone: String;
-  department: String;
-  dateOfJoining: String;
-  empRole: String;
+  empId: string;
+  empName: string;
+  email: string;
+  phone: string;
+  department: string;
+  dateOfJoining: string;
+  empRole: string;
 }
 
 async function fetchEmployees(): Promise<APIResponse[]> {
