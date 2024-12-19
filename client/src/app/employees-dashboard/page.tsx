@@ -1,8 +1,4 @@
 import Link from "next/link";
-import axios from "axios";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 interface APIResponse {
   empId: string;
@@ -16,14 +12,23 @@ interface APIResponse {
 
 async function fetchEmployees(): Promise<APIResponse[]> {
   try {
-    const response = await axios.get<APIResponse[]>(`${process.env.NEXT_PUBLIC_SERVER_URL}/read-employees`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/read-employees`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
 
-    return response.data;
+    if (!response.ok) {
+      throw new Error(`Error fetching employees: ${response.statusText}`);
+    }
+
+    return await response.json();
   } catch (error) {
     console.error(error);
     return [];
   }
 }
+
+export const revalidate = 60;
 
 export default async function Page() {
   const employees = await fetchEmployees();
@@ -46,25 +51,19 @@ export default async function Page() {
           <thead>
             <tr className="bg-green-300">
               <th className="border border-gray-300 px-4 py-2">Employee Id</th>
-              <th className="border border-gray-300 px-4 py-2">
-                Employee Name
-              </th>
+              <th className="border border-gray-300 px-4 py-2">Employee Name</th>
               <th className="border border-gray-300 px-4 py-2">Email</th>
               <th className="border border-gray-300 px-4 py-2">Phone</th>
               <th className="border border-gray-300 px-4 py-2">Department</th>
-              <th className="border border-gray-300 px-4 py-2">
-                Date of Joining
-              </th>
-              <th className="border border-gray-300 px-4 py-2">
-                Employee Role
-              </th>
+              <th className="border border-gray-300 px-4 py-2">Date of Joining</th>
+              <th className="border border-gray-300 px-4 py-2">Employee Role</th>
             </tr>
           </thead>
           <tbody>
-            {employees.map((employee, index) => (
+            {employees.map((employee) => (
               <tr
-                key={index}
-                className={index % 2 === 0 ? "bg-white" : "bg-violet-50"}
+                key={employee.empId}
+                className="bg-white even:bg-violet-50"
               >
                 <td className="border border-gray-300 px-4 py-2 text-center">
                   {employee.empId}
